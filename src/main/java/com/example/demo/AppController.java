@@ -116,14 +116,14 @@ public class AppController {
 //		
 //		List<Dataset> listData = datarepo.findAll();
 //		model.addAttribute("listData", listData);
-		return "users2";
+		return "main";
 	}
 	
 	@RequestMapping("/main/{username}")
 	public String showDataset(@PathVariable String username, Model model) {
 		List<Dataset> listData= datarepo.findByUsername(username);
 		model.addAttribute("listData", listData);
-		return "users2";
+		return "main";
 	}
 	
 //	@RequestMapping(value="/main/delete_dataset", method=RequestMethod.POST)
@@ -136,5 +136,10 @@ public class AppController {
 	public String deleteDataset(@PathVariable String id) {
 		datarepo.deleteFromId(id);
 		return "redirect:/main";
+	}
+
+	@GetMapping("/charts")
+	public String showCharts(){
+		return "charts";
 	}
 }

@@ -1,0 +1,19 @@
+form {
+    padding: 40px;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+p {
+    text-align: center;
+}
+
+.innerPositions {
+    width: 800px;
+    height: auto;
+    margin: auto;
+    display: block;
+}
