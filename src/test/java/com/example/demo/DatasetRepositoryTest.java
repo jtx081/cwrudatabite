@@ -3,7 +3,11 @@ package com.example.demo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.Date;
 
@@ -39,6 +43,11 @@ public class DatasetRepositoryTest {
 		
 		dataset.setUploadTime(new Date());
 		
+		dataset.setUsername("10");
+		
+		System.out.println(file.getName());
+		System.out.println(bytes);
+		
 		Dataset savedDataset = repo.save(dataset);
 		
 		Dataset existDataset = entityManager.find(Dataset.class, savedDataset.getDatasetID());
@@ -56,5 +65,31 @@ public class DatasetRepositoryTest {
 		Dataset data = repo.findByDatasetId(15);
 		
 		assertThat(data).isNull();
+	}
+	
+	@Test
+	public void testGetFile() throws IOException {
+		String fileName = repo.getFilename(31);
+		byte[] bytes = repo.getFile(31);
+		
+//		File newFile = new File(fileName);
+//		newFile.createNewFile();
+//		
+//		OutputStream os = new FileOutputStream(newFile);
+//		os.write(bytes);
+//		os.close();
+//		FileInputStream fis = new FileInputStream(newFile);
+//		
+//		fis.read(bytes);
+//		fis.close();
+//		String s = new String(bytes);
+//		
+//		System.out.println(s);
+		
+		
+		
+		assertThat(bytes).isNotNull();
+		
+		
 	}
 }

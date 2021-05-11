@@ -25,6 +25,15 @@ public class User {
 
     @Column(nullable = false, length = 50)
     private String password;
+    
+    //0 = regular user
+    //1 = company admin
+    //2 = site admin
+    private int accountType;
+    
+    private int companyID;
+    
+    private String companyName;
 
 //    public int getId() {
 //    	return id;
@@ -34,7 +43,23 @@ public class User {
 //    	this.id = id;
 //    }
     
-    public String getUsername() {
+    public int getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(int accountType) {
+		this.accountType = accountType;
+	}
+
+	public int getCompanyID() {
+		return companyID;
+	}
+
+	public void setCompanyID(int companyID) {
+		this.companyID = companyID;
+	}
+
+	public String getUsername() {
         return this.username;
     }
 
@@ -49,4 +74,12 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 }

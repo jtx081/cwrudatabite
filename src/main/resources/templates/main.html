@@ -88,12 +88,13 @@
                         	<!-- <td th:text="${data.name}">Name</td> -->
                         	<!-- <td th:text="${data.size}">Size</td> -->
                         	<td class="actions">
-                                <button><i class="fa fa-download"></i></button>
-                                <button><i class="fa fa-pencil"></i></button>
+                        		<a class = "btn btn-light" th:href="@{'/download?id='+${data.datasetID}}" title="Download dataset"><i class="fa fa-download"></i></a>
+                                <!-- <button><i class="fa fa-pencil"></i></button> -->
                                 <!-- <button><i class="fa fa-bar-chart"></i></button> -->
-                                <a th:href="@{/charts}" title="Visualize data"><i class="fa fa-bar-chart"></i></a>
-                                <a th:href="@{/main/delete_dataset/{id}(id=${data.datasetID})}" title="Delete dataset" onClick="return confirm('Are you sure you want to delete?')"><i class="fa fa-trash"> </i></a> 
-                            </td>    
+                                <a class = "btn btn-light" th:href="@{/charts}" title="Visualize data"><i class="fa fa-bar-chart"></i></a>
+                                <a class = "btn btn-light" th:href="@{/main/delete_dataset/{id}(id=${data.datasetID})}" title="Delete dataset" onClick="return confirm('Are you sure you want to delete?')"><i class="fa fa-trash"> </i></a> 
+                            </td>   
+                            <td></td> 
                         </tr>
                     </tbody>
                 </table>

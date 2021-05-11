@@ -3,8 +3,14 @@ package com.example.demo;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,8 +34,8 @@ public class AppController {
 	@Autowired
 	private DatasetRepository datarepo;
 	
-	private String username;
-	
+	private int companyID;
+		
 	@GetMapping("")
 	public String viewHomePage() {
 		return "index";
@@ -51,11 +57,6 @@ public class AppController {
 		model.addAttribute("listData", listData);
 		return "uploadfile";
 	}
-//	@PostMapping("/user")
-//	public String user(@RequestParam("username") String Username) {
-//		username = Username;
-//		return "redirect:/main";
-//	}
 	
 	@PostMapping("/upload")
 	public String uploadFile(@RequestParam("file") MultipartFile multipartFile, @RequestParam("username") String username,
@@ -64,11 +65,12 @@ public class AppController {
 		
 		Dataset dataset = new Dataset();
 		dataset.setName(fileName);
+		
 		dataset.setContent(multipartFile.getBytes());
 		dataset.setSize(multipartFile.getSize());
 		dataset.setUploadTime(new Date());
 		dataset.setUsername(username);
-				
+	
 		datarepo.save(dataset);
 		
 		ra.addFlashAttribute("message","File uploaded successfully!");
@@ -78,14 +80,12 @@ public class AppController {
 	@GetMapping("/register_individual")
 	public String showIndividualReg(Model model) {
 		model.addAttribute("user", new User());
-//		return "signup_form";
 		return "individualregistration";
 	}
 	
 	@GetMapping("/register_business")
 	public String showBusinessReg(Model model) {
 		model.addAttribute("user", new User());
-//		return "signup_form";
 		return "businessregistration";
 	}
 	
@@ -93,8 +93,8 @@ public class AppController {
 	public String showAccount() {
 		return "account";
 	}
-	@PostMapping("/process_register")
-	public String processRegistration(User user, RedirectAttributes ra) {
+	@PostMapping("/process_register/ind")
+	public String processRegistrationInd(User user, RedirectAttributes ra) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String encodedPassword = encoder.encode(user.getPassword());
 		user.setPassword(encodedPassword);
@@ -104,16 +104,32 @@ public class AppController {
 			return "redirect:/register_individual";
 		}
 		else {
+			user.setAccountType(0);
+			repo.save(user);
+			return "register_success";
+		}
+	}
+	
+	@PostMapping("/process_register/bus")
+	public String processRegistrationBus(User user, RedirectAttributes ra) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String encodedPassword = encoder.encode(user.getPassword());
+		user.setPassword(encodedPassword);
+		if(repo.findByUsername(user.getUsername()) != null) {
+			ra.addFlashAttribute("message","User already exists.");
+			
+			return "redirect:/register_business";
+		}
+		else {
+			user.setAccountType(1);
+			user.setCompanyID(new Random().nextInt(900000) + 100000);
 			repo.save(user);
 			return "register_success";
 		}
 	}
 	
 	@GetMapping("/main")
-	public String viewUsersList(Model model) {
-		List<User> listusers = repo.findAll();
-		model.addAttribute("listUsers", listusers);
-//		
+	public String viewUsersList(Model model) {		
 //		List<Dataset> listData = datarepo.findAll();
 //		model.addAttribute("listData", listData);
 		return "main";
@@ -126,12 +142,6 @@ public class AppController {
 		return "main";
 	}
 	
-//	@RequestMapping(value="/main/delete_dataset", method=RequestMethod.POST)
-//	public String deleteDataset(@RequestParam("paramName") String id) {
-//		System.out.print(id);
-//		datarepo.deleteFromId(id);
-//		return "redirect:/main";
-//	}
 	@RequestMapping("/main/delete_dataset/{id}")
 	public String deleteDataset(@PathVariable String id) {
 		datarepo.deleteFromId(id);
@@ -141,5 +151,24 @@ public class AppController {
 	@GetMapping("/charts")
 	public String showCharts(){
 		return "charts";
+	}
+	
+	@GetMapping("/download")
+	public void downloadFile(@Param("id") int id, HttpServletResponse response) throws IOException {
+		Dataset result = datarepo.findByDatasetId(id);
+		
+		response.setContentType("application/octet-stream");
+		
+		String headerKey = "Content-Disposition";
+		String headerValue = "attachment; filename="+result.getName();
+		
+		response.setHeader(headerKey, headerValue);
+		
+		ServletOutputStream outputStream = response.getOutputStream();
+		
+		outputStream.write(result.getContent());
+		
+		outputStream.close();
+		
 	}
 }
