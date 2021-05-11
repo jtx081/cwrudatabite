@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="UI-1">
+    <link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/registration.css">
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+ 
+    <title>Sign Up</title>
+    
+</head>
+
+<body>
+    
+<div class="container" style="max-width: 500px; margin: 0 auto;">
+    <div class="row">
+        
+        <h1 class="text-center">Choose your account type</h1>
+        <br>
+        <p>Get started with CWRU Databite! Upload, clean, and visualize your data using CWRU Databite's features. To get started with your free account, choose your account type. </p>
+        
+<!--         <div class="buttons">
+            <br>
+            <button type="button" onclick="document.location='individualregistration.html'" class="btn btn-outline-dark btn-lg btn-block" id="individual">Individual</button>
+        </div>
+        
+        <div class="buttons">
+            <br>
+            <button type="button" onclick="document.location='/businessregistration.html'" class="btn btn-outline-dark btn-lg btn-block" id="business">Business</button>
+        </div> -->
+        
+        
+
+		<div>
+			<h3><a th:href="@{/register_individual}">Individual</a></h3>
+			<h3><a th:href="@{/register_business}">Business</a></h3>
+		</div>
+        
+    </div>
+</div>
+    
+</body>

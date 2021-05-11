@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<meta name="description" content="UI-2">
+<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="/css/main.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+ 
+<body>
+    <title>Main Page</title>
+</body>
+
+<div class="topnav">
+	<a class="active" th:href="@{/main}" style="color:white">CWRU Databite</a>
+    <a th:href="@{/account}">Account</a>
+    <a href="documentation.html">Tutorial</a>	
+ 	<a class="active" style = "color:white"> Welcome, <b>[[${#request.userPrincipal.principal.fullName}]]</b></a>
+ 	<a class="active">
+		<form th:action="@{/logout}" method="POST">
+			<input type="submit" value="Log Out"/>
+		</form>
+	</a>
+</div>
+
+
+<div class="container">
+      <div class="content-panel">
+        <div class="content-header-wrapper">
+        	<br>
+            <h2 class="title">Datasets</h2>
+            <div class="actions">
+            <a class="btn btn-success" th:href="@{/file_upload}"><i class="fa fa-plus"></i> Upload New Item</a>
+                <!-- <button class="btn btn-success" onclick="openForm(); window.location.reload()"><i class="fa fa-plus"></i> Upload New Item</button>
+                <div class="form-popup" id = "myForm">
+                    <div class="panel panel-default">
+                    <div class="panel-body">
+                    
+                   <form th:action="@{/upload}" method="post" enctype="multipart/form-data">
+         
+                        File Drop Area
+                        <div class="drag-area" id ="upload">
+                            <header>Drag & Drop to Upload File</header>
+                            <span>OR</span>
+                            <button>Browse Files</button>
+                            <br>
+                            <br>
+                            <br>
+                            <input type="file" name="file" required hidden>
+                            <input type="submit" value="Upload" class="btn btn-primary" />
+
+                    
+                        </div>
+                        <script src="/js/main.js"></script>
+                        
+                  </form>
+                    
+
+                    Close Button
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>     -->               
+                </div>
+            </div>
+        </div>
+
+          <div class="drive-wrapper drive-list-view">
+            <div class="table-responsive drive-items-table-wrapper">
+            	<br>
+                    	
+                <table id="datasettable" class="table">
+                
+                    <thead class="thead-dark">
+                        <tr>
+                            <th width="500px">Name</th>
+                            <th wdith="300px">Size</th>
+                            <th width="300px">Actions</th>
+                            <th width="50px"><a class="btn btn-success" th:href="@{/main/{username}(username=${#request.userPrincipal.principal.fullName})}" title="Must click to view your datasets">View Datasets</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+  
+                        <tr th:each="data: ${listData}">
+                        	<td>[[${data.name}]]</td>
+                        	<td>[[${#numbers.formatInteger(data.size, 4, 'COMMA')}]] bytes</td>
+                        	<!-- <td th:text="${data.name}">Name</td> -->
+                        	<!-- <td th:text="${data.size}">Size</td> -->
+                        	<td class="actions">
+                                <button><i class="fa fa-download"></i></button>
+                                <button><i class="fa fa-pencil"></i></button>
+                                <button><i class="fa fa-bar-chart"></i></button>
+                    
+                                <a th:href="@{/main/delete_dataset/{id}(id=${data.datasetID})}" title="Delete dataset" onClick="return confirm('Are you sure you want to delete?')"><i class="fa fa-trash"> </i></a> 
+                            </td>    
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>
+</div>
+</div>

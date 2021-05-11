@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>File Upload</title>
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+</head>
+<body>
+	<div class="container-fluid text-center">
+		<div class="text-success">
+			<h3>[[${message}]]</h3>
+		</div>
+		
+		<div>
+			<h1> File Upload</h1>
+		</div>
+		
+		<form th:action="@{/upload}" method="post" enctype="multipart/form-data" style="max-width: 600px; margin: 0 auto;">
+			<div class="border rounded m-5">
+		<!-- 		<h2>Upload Your Files: </h2> -->
+				<br>
+				<p>
+					<input type="file" name="file" accept=".csv" required />
+					<input type="text" name="username" th:value="${#request.userPrincipal.principal.fullName}" hidden />
+				</p>
+				<p>
+					<input type="submit" value="Upload" class="btn btn-primary"/>
+				</p>
+			</div>
+		</form>
+		
+		<div>
+			<h4><a th:href="@{/main}">Main Page</a></h4>
+		</div>
+	</div>
+
+</body>
+</html>

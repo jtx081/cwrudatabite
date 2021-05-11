@@ -1,0 +1,8 @@
+/* Set form inputs to half-width of screen */
+.form-control { width: 50% !important; }
+
+#datasetstable th, #userViewOptions th { width: 50% !important; }
+
+#editmanageableuserstable { float: right; }
+
+#sidetab .nav-link, .dropdown-item { cursor: pointer; }

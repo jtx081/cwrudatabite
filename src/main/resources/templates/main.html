@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="description" content="UI-2">
+<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="./css/main.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+ 
+<body>
+    <title>Main Page</title>
+</body>
+
+<div class="topnav">
+    <a class="active" href="main.html">CWRU Databite</a>
+    <a href="account.html">Account</a>
+    <a href="documentation.html">Tutorial</a>
+    <a href="home.html">Log Out</a>
+</div>
+
+<div class="container">
+      <div class="content-panel">
+        <div class="content-header-wrapper">
+            <h2 class="title">Datasets</h2>
+            <div class="actions">
+                <button class="btn btn-success" onclick="openForm(); window.location.reload()"><i class="fa fa-plus"></i> Upload New Item</button>
+                <div class="form-popup" id = "myForm">
+                    <div class="panel panel-default">
+                    <div class="panel-body">
+                    
+                    <!-- <form id="fileUpload" th:action="@{/fileupload}" th:object="${user}" method="POST" enctype="multipart/form-data"> -->
+                        <!-- <form> -->
+                        <!-- File Drop Area -->
+                        <div class="drag-area" id ="upload">
+                            <header>Drag & Drop to Upload File</header>
+                            <span>OR</span>
+                            <button>Browse Files</button>
+                            <input type="file" hidden>
+
+                    
+                        </div>
+                        <script src="./js/main.js"></script>
+                        
+                    <!-- </form> -->
+                    
+
+                    <!-- Close Button -->
+                    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>                   
+                </div>
+            </div>
+        </div>
+
+        <div class="drive-wrapper drive-list-view">
+            <div class="table-responsive drive-items-table-wrapper">
+                <table id="datasettable" class="table">
+                    <thead>
+                        <tr>
+                            <th class="name truncate">Name</th>
+                            <th class="size">Size</th>
+                            <th class="actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="name truncate"><a href="#">Meeting Notes.txt</a></td>
+                            <td class="size">18 KB</td>
+                            <td class="actions">
+                                <button><i class="fa fa-download"></i></button>
+                                <button><i class="fa fa-pencil"></i></button>
+                                <button><i class="fa fa-bar-chart"></i></button>
+                                <button><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="name truncate"><a href="#">Meeting Notes.csv</a></td>
+                            <td class="size">235 MB</td>
+                            <td class="actions">
+                                <button><i class="fa fa-download"></i></button>
+                                <button><i class="fa fa-pencil"></i></button>
+                                <button><i class="fa fa-bar-chart"></i></button>
+                                <button><i class="fa fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+</div>

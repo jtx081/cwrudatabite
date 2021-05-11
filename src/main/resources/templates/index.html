@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>CWRU Databite</title>
+	<link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="./bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./css/home.css">
+</head>
+
+<body>
+	<div class="topBar"> 
+	    <img src="/images/logo.PNG" class="logo">
+	</div>
+	
+	<div class="container text-center">
+			<h3><a th:href="@{/register_type}">Register</a></h3>
+			<h3><a th:href="@{/login}">Login</a></h3>
+			<!-- <h3><a th:href="@{/file_upload}">File Upload</a></h3> -->
+		
+	</div>
+</body>
+</html>   

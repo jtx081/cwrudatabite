@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Business Registration</title>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script> 
+<head>
+    <title>Business Registration Page</title>
+</head>
+<!-- <body onload ="setRand()">
+    <div class="container">
+        <div class="row">
+            <h2 class="text-center">Business Registration</h2>
+            
+            <div class="panel panel-primary">
+                <div class="panel-body">
+        
+                    <form id="businessRegister" th:action="@{/registration}" method="POST" th:object="${user}">
+                        <div class="form-group">
+                            <label class="control-label" for="signupEmail">Email Address</label>
+                            <input type="email" class="form-control" id="reg_Email" th:field="*{email}" required maxlength="50">
+                        </div>
+    
+                        <div class="form-group">
+                            <br>
+                            <label class="control-label" for="signupPassword">Password</label>
+                            <input type="password" class="form-control" id="reg_Password" th:field="*{password}" required maxlength="50">
+                        </div>
+
+                        <div class="form-group">
+                            <br>
+                            <label class="control-label" for="signupCompanyName">Company Name</label>
+                            <input type="text" class="form-control" id="reg_CompanyName" th:field="*{company_name}" required maxlength="50">
+                        </div>
+
+                        <div class="form-group">
+                            <br>
+                            <label class="control-label" for="signupCompanyID">Company ID</label>
+                            <input type="text" id="rand" disabled>  
+                            <br>
+                            <small id="emailHelp" class="form-text text-muted">This is your assigned company ID.</small>
+                        </div>                      
+                        </div>
+         
+                        <div class="form-group">
+                            <br>
+                            <button id="signupSubmit" type="submit" class="btn btn-primary">Sign Up</button>
+                        </div>
+                        
+                        <script src="./js/businessregistration.js"></script>
+                        <hr>
+                        <p></p>Already have an account? <a href="./home.html">Sign in</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body> -->
+
+
+<body onload ="setRand()">
+    <div class="container text-center">
+        <div>
+            <h1>Business Registration</h1>
+        </div>
+        <form th:action="@{/process_register}" th:object="${user}"
+            method="post" style="max-width: 400px; margin: 0 auto;">
+        <div class="m-3">
+            <div class="form-group row">
+                <label class="col-4 col-form-label">E-mail: </label>
+                <div class="col-8">
+                    <input type="email" th:field="*{username}" class="form-control" required />
+                </div>
+            </div>
+             
+            <div class="form-group row">
+                <label class="col-4 col-form-label">Password: </label>
+                <div class="col-8">
+                    <input type="password" th:field="*{password}" class="form-control"
+                            required minlength="8" maxlength="10"/>
+                </div>
+            </div>
+            
+             <div class="form-group row">
+                <label class="col-4 col-form-label">Company Name: </label>
+                <div class="col-8">
+                    <input type="password" th:field="*{password}" class="form-control"
+                            required minlength="8" maxlength="10"/>
+                </div>
+            </div>
+             
+             <div class="form-group row">
+                <label class="col-4 col-form-label">Company ID: </label>
+                <div class="col-8">
+                   <input type="text" id="rand" disabled> 
+                   <br>
+                   <small id="emailHelp" class="form-text text-muted">This is your assigned company ID.</small>
+          
+                </div>
+            </div>
+             
+            <div>
+                <button type="submit" class="btn btn-primary">Sign Up</button>
+            </div>
+            
+            <script src="/js/businessReg.js"></script>
+            <hr>
+            <p>Already have an account? <a th:href="@{/login}">Sign in</a></p>
+        </div>
+        </form>
+    </div>
+</body>
+</html>
+
+       
+
+
