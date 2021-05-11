@@ -171,4 +171,9 @@ public class AppController {
 		outputStream.close();
 		
 	}
+	
+	@GetMapping("/tutorial")
+	public String showTutorial() {
+		return "tutorial";
+	}
 }

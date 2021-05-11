@@ -17,7 +17,7 @@
 <div class="topnav">
     <a class="active" th:href="@{/main}" style="color:white">CWRU Databite</a>
     <a th:href="@{/account}">Account</a>
-    <a href="documentation.html">Tutorial</a>	
+    <a th:href="@{/tutorial}">Tutorial</a>	
  	<a class="active" style = "color:white"> Welcome, <b>[[${#request.userPrincipal.principal.fullName}]]</b></a>
  	<a class="active">
 		<form th:action="@{/logout}" method="POST">

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>Tutorial</title>
+	<link rel="stylesheet" href="/css/main.css">
+	<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+	
+</head>
+<body>
+
+<div class="topnav">
+	<a class="active" th:href="@{/main}" style="color:white">CWRU Databite</a>
+    <a th:href="@{/account}">Account</a>
+    <a th:href="@{/tutorial}">Tutorial</a>	
+ 	<a class="active" style = "color:white"> Welcome, <b>[[${#request.userPrincipal.principal.fullName}]]</b></a>
+ 	<a class="active">
+		<form th:action="@{/logout}" method="POST">
+			<input type="submit" value="Log Out"/>
+		</form>
+	</a>
+</div>
+
+<div>
+	<h1 style="text-align:center;">How To Use CWRU Databite</h1>
+	<br>
+	<h5>
+		<ol>
+			<li>Upload your dataset. Accepted file types include csv, txt, tsv, sql. </li>
+			<li>Visualize your dataset. Generate graphs such as histograms, scatterplots, line graphs, and polar area charts.</li>
+			<li>Remove duplicates samples from your dataset.</li>
+			<li>Treat missing data in your dataset.</li>
+			<li>Download cleaned dataset.</li>
+			<li>Delete uploaded dataset.</li>
+		</ol>
+		
+	</h5>
+</div>
+</body>
+</html>
