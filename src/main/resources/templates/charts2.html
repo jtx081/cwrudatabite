@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<head>
+    
+    <html xmlns:th="http://www.thymeleaf.org">
+    <meta charset="utf-8">
+    <meta name="description" content="UI-1">
+    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/charts.css">
+ 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script src="../static/js/parser.js"></script>
+    <title>Charts</title>
+    
+</head>
+
+<body>
+    <h1>Select your charts</h1>
+    <p>All fields are optional, but allow for more customization.</p>
+
+    <!-- Display checkboxes -->
+    <form>
+        <div class="polarAreaChart">
+            <input type="checkbox" id="polarArea" name="polarArea" onclick="createPolarAreaFields();">
+            <label for="polarArea">Polar area chart</label>
+        </div>
+
+        <div class="polarAreaTitle" id="paTitle"></div>
+
+
+        <div class="histogramChart">
+            <input type="checkbox" id="histogram" name="histogram" onclick="createHistogramTitle();">
+            <label for="histogram">Histogram</label>
+        </div>
+
+        <div class="histogramTitle" id="hTitle"></div>
+
+
+        <div class="lineGraphChart">
+            <input type="checkbox" id="lineGraph" name="lineGraph" onclick="createLineGraphFields();">
+            <label for="lineGraph">Line graph</label>
+        </div>
+
+        <div class="lineGraphTitle" id="lgTitle"></div>
+
+
+        <div class="scatterPlotChart">
+            <input type="checkbox" id="scatterPlot" name="scatterPlot" onclick="createScatterPlotFields();">
+            <label for="scatterPlot">Scatter plot</label>
+        </div>
+
+        <div class="scatterPlot" id="spTitle"></div>
+
+
+        <div class="submitButton">
+            <button type="submit" class="btn btn-primary" id="generateCharts" onClick="generate();return false;">Generate Charts</button>
+        </div>
+    </form>
+
+    <hr>
+
+    <!-- Position generated plots on the page -->
+    <div class="chartPositions">
+
+        <div class="innerPositions">
+            <canvas id="pa"></canvas>
+        </div>
+        <div id="paImage"></div>
+
+
+        <div class="innerPositions">
+            <canvas id="h"></canvas>
+        </div>
+        <div id="hImage"></div>
+
+
+        <div class="innerPositions">
+            <canvas id="lg"></canvas>
+        </div>
+        <div id="lgImage"></div>
+
+
+        <div class="innerPositions">
+            <canvas id="sp"></canvas>
+        </div>
+        <div id="spImage"></div>
+        
+    </div>
+
+    <script>
+        // Data
+        //var data = 
+
+        // Global chart values
+        var polarArea;
+        var histogram;
+        var lineGraph;
+        var scatterPlot;
+
+        var paIMG;
+        var hIMG;
+        var lgIMG;
+        var spIMG;
+
+        // Global field variables
+        var polarAreaTitle;
+        var histogramTitle;
+        var lineGraphTitle;
+        var scatterPlotTitle;
+        
+        var polarAreaTitleInput = "";
+        var histogramTitleInput = "";
+        var lineGraphTitleInput = "";
+        var scatterPlotTitleInput = "";
+
+        var lineGraphColor;
+
+
+        // ---------------------------------------------------------------------------------
+
+        // Generate all selected charts
+        function generate() {
+            if (document.getElementById('polarArea').checked) { 
+                polarAreaTitleInput = document.getElementById('PAtitle').value;
+                generatePolarArea(); }
+            else { if (polarArea) { polarArea.destroy(); }}
+
+            if (document.getElementById('histogram').checked) { 
+                histogramTitleInput = document.getElementById('Htitle').value;
+                generateHistogram(); }
+            else { if (histogram) { histogram.destroy(); }}
+
+            if(document.getElementById('lineGraph').checked) { 
+                lineGraphTitleInput = document.getElementById('LGtitle').value;
+                generateLineGraph(); }
+            else { if (lineGraph) { lineGraph.destroy(); }}
+
+            if(document.getElementById('scatterPlot').checked) { 
+                scatterPlotTitleInput = document.getElementById('SPtitle').value;
+                generateScatterPlot(); }
+            else { if (scatterPlot) { scatterPlot.destroy(); }}
+        }
+
+
+        // Generate individual charts
+        function generatePolarArea() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
+            let chart = document.getElementById('pa').getContext('2d');
+
+            polarArea = new Chart(chart, {
+                type: 'polarArea',
+                data: {
+                    datasets: []
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: polarAreaTitleInput,
+                        fontSize: 25
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    animation: false
+                }
+            });
+
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData.length; i++) {
+                polarArea.data.datasets.push(formatPHLDatasets(myData, i));
+            }
+            polarArea.update();
+
+            // Download
+            console.log(polarArea.toBase64Image());
+            var a = document.createElement('a');
+            a.href = polarArea.toBase64Image();
+            a.download = 'Polar_Area_Chart.png';
+
+            a.click();
+        }
+
+
+        function generateHistogram() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
+            let chart = document.getElementById('h').getContext('2d');
+
+            histogram = new Chart(chart, {
+                type: 'bar',
+                data: {
+                    labels: myLabels,
+                    datasets: []
+                    
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: histogramTitleInput,
+                        fontSize: 25
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    animation: false
+                }
+            });
+
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData.length; i++) {
+                histogram.data.datasets.push(formatPHLDatasets(myData, i));
+            }
+            histogram.update();
+
+            // Download
+            console.log(histogram.toBase64Image());
+            var a = document.createElement('a');
+            a.href = histogram.toBase64Image();
+            a.download = 'Histogram.png';
+
+            a.click();
+        }
+
+
+        function generateLineGraph() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
+            let chart = document.getElementById('lg').getContext('2d');
+
+            lineGraph = new Chart(chart, {
+                type: 'line',
+                data: {
+                    labels: myLabels,
+                    datasets: []
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: lineGraphTitleInput,
+                        fontSize: 25
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    animation: false
+                }
+            });
+
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData.length; i++) {
+                lineGraph.data.datasets.push(formatPHLDatasets(myData, i));
+            }
+            lineGraph.update();
+
+            // Download
+            console.log(lineGraph.toBase64Image());
+            var a = document.createElement('a');
+            a.href = lineGraph.toBase64Image();
+            a.download = 'Line_Graph.png';
+
+            a.click();
+        }
+
+
+        function generateScatterPlot() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
+            let chart = document.getElementById('sp').getContext('2d');
+
+            scatterPlot = new Chart(chart, {
+                type: 'scatter',
+                data: {
+                    datasets: [{
+                        data: [], 
+                        backgroundColor: 'rgba(0, 0, 225, .5)',
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: scatterPlotTitleInput,
+                        fontSize: 25
+                    },
+                    legend: {
+                        display: false
+                    },
+                    tooltips: {
+                        enabled: false
+                    },
+                    animation: false
+                }
+            });
+
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData[0].length; i++) {
+                scatterPlot.data.datasets[0].data.push(formatSDatasets(myData, i));
+            }
+            scatterPlot.update();
+
+            // Download
+            console.log(scatterPlot.toBase64Image());
+            var a = document.createElement('a');
+            a.href = scatterPlot.toBase64Image();
+            a.download = 'Scatter_Plot.png';
+
+            a.click();
+        }
+
+
+        // ---------------------------------------------------------------------------------
+        
+        // Create required user input fields for each chart
+        function createPolarAreaFields() {
+            // Title
+            if (!polarAreaTitle) {
+                polarAreaTitle = document.createElement('div');
+                polarAreaTitle.innerHTML = "<label for='title'>Title:</label><input type='text' id='PAtitle'>";
+                document.getElementById("paTitle").appendChild(polarAreaTitle);
+            }
+            else { 
+                polarAreaTitle.remove(); 
+                polarAreaTitle = null;
+            }
+
+            // Color scheme
+        }
+
+
+        function createHistogramTitle() {
+            // Title
+            if (!histogramTitle) {
+                histogramTitle = document.createElement('div');
+                histogramTitle.innerHTML = "<label for='title'>Title:</label><input type='text' id='Htitle'>";
+                document.getElementById("hTitle").appendChild(histogramTitle);
+            }
+            else { 
+                histogramTitle.remove(); 
+                histogramTitle = null;
+            }
+
+            // Color scheme
+        }
+
+
+        function createLineGraphFields() {
+            // Title
+            if (!lineGraphTitle) {
+                lineGraphTitle = document.createElement('div');
+                lineGraphTitle.innerHTML = "<label for='title'>Title:</label><input type='text' id='LGtitle'>";
+                document.getElementById("lgTitle").appendChild(lineGraphTitle);
+            }
+            else { 
+                lineGraphTitle.remove(); 
+                lineGraphTitle = null;
+            }
+
+            // Color scheme
+            if (!lineGraphColor) {
+                
+            }
+        }
+
+
+        function createScatterPlotFields() {
+            // Title
+            if (!scatterPlotTitle) {
+                scatterPlotTitle = document.createElement('div');
+                scatterPlotTitle.innerHTML = "<label for='title'>Title:</label><input type='text' id='SPtitle'>";
+                document.getElementById("spTitle").appendChild(scatterPlotTitle);
+            }
+            else { 
+                scatterPlotTitle.remove(); 
+                scatterPlotTitle = null;
+            }
+
+            // Color scheme
+        }
+    </script>
+
+</body>

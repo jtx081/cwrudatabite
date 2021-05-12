@@ -29,8 +29,9 @@ public class User {
     //0 = regular user
     //1 = company admin
     //2 = site admin
-    private int accountType;
+    private String accountType;
     
+    @Column(length=6)
     private int companyID;
     
     private String companyName;
@@ -43,11 +44,11 @@ public class User {
 //    	this.id = id;
 //    }
     
-    public int getAccountType() {
+    public String getAccountType() {
 		return accountType;
 	}
 
-	public void setAccountType(int accountType) {
+	public void setAccountType(String accountType) {
 		this.accountType = accountType;
 	}
 

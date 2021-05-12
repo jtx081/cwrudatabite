@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -34,7 +36,7 @@ public class AppController {
 	@Autowired
 	private DatasetRepository datarepo;
 	
-	private int companyID;
+	private String username;
 		
 	@GetMapping("")
 	public String viewHomePage() {
@@ -90,8 +92,15 @@ public class AppController {
 	}
 	
 	@GetMapping("/account")
-	public String showAccount() {
-		return "account";
+	public String showAccount(@AuthenticationPrincipal CustomUserDetails loggedUser) {
+		String email = loggedUser.getFullName();
+		this.username = email;
+		User user = repo.findByUsername(this.username);
+		if(user.getCompanyID()!=0 && user.getAccountType().equals("Company Admin")) {
+			return "accountBus";
+		}
+		
+		return "accountInd";
 	}
 	@PostMapping("/process_register/ind")
 	public String processRegistrationInd(User user, RedirectAttributes ra) {
@@ -103,12 +112,20 @@ public class AppController {
 			
 			return "redirect:/register_individual";
 		}
-		else {
-			user.setAccountType(0);
-			repo.save(user);
-			return "register_success";
+		
+		if(user.getCompanyID() != 0) {
+			if(repo.findByCompanyID(user.getCompanyID()) == null) {
+				ra.addFlashAttribute("message","Invalid company ID.");
+				
+				return "redirect:/register_individual";
+			}
 		}
+		
+		user.setAccountType("Individual");
+		repo.save(user);
+		return "register_success";
 	}
+	
 	
 	@PostMapping("/process_register/bus")
 	public String processRegistrationBus(User user, RedirectAttributes ra) {
@@ -121,7 +138,7 @@ public class AppController {
 			return "redirect:/register_business";
 		}
 		else {
-			user.setAccountType(1);
+			user.setAccountType("Company Admin");
 			user.setCompanyID(new Random().nextInt(900000) + 100000);
 			repo.save(user);
 			return "register_success";
@@ -137,6 +154,14 @@ public class AppController {
 	
 	@RequestMapping("/main/{username}")
 	public String showDataset(@PathVariable String username, Model model) {
+		int companyID = repo.getCompanyID(username);
+		if(companyID != 0) {
+			User companyAdmin = repo.findByCompanyID(companyID);
+			String companyUsername = companyAdmin.getUsername();
+			List<Dataset> listData = datarepo.findByUsernameAndComp(username, companyUsername);
+			model.addAttribute("listData", listData);
+			return "main";
+		}
 		List<Dataset> listData= datarepo.findByUsername(username);
 		model.addAttribute("listData", listData);
 		return "main";
@@ -159,7 +184,7 @@ public class AppController {
 		
 		response.setContentType("application/octet-stream");
 		
-		String headerKey = "Content-Disposition";
+		String headerKey = "Content-Dispositison";
 		String headerValue = "attachment; filename="+result.getName();
 		
 		response.setHeader(headerKey, headerValue);
@@ -175,5 +200,79 @@ public class AppController {
 	@GetMapping("/tutorial")
 	public String showTutorial() {
 		return "tutorial";
+	}
+	
+	@RequestMapping("/account/delete/{username}")
+	public String deleteAccount(@PathVariable String username) {
+		
+		if(repo.findCompanyAccount(username) != null) {
+			int companyID = repo.getCompanyID(username);
+			repo.updateCompanyID(companyID);
+		}
+		datarepo.deleteFromUsername(username);
+		repo.deleteFromId(username);
+		return "redirect:/home";
+	}
+	
+//	@RequestMapping("/account/update_password/{username}")
+//	public String updatePassword(@PathVariable String username, User user) {
+//		System.out.print(user.getPassword());
+//		return "accountBus";
+//			
+//	}
+	
+	@RequestMapping("/account/update_password")
+	public String updatePassword(@RequestParam("password") String password) {
+		return "accountBus";
+			
+	}
+	
+	@GetMapping("/account/view")
+	public String showView(Model model) {
+		if(repo.findCompanyAccount(this.username) != null) {
+			int companyID = repo.getCompanyID(this.username);
+			List<User> userData = repo.getUsersWithCompanyID(companyID);
+			model.addAttribute("userData", userData);
+			return "accountBus";
+		}
+
+		return "accountBus";
+	}
+	
+	@RequestMapping("/account/remove/{id}")
+	public String removeIndividual(@PathVariable String id) {
+		System.out.println(id);
+		repo.removeCompanyID(id);
+		return "redirect:/account";
+	}
+	
+//	@GetMapping("/account/companyID")
+//	public String showCompanyID(Model model) {
+//		int companyID = repo.getCompanyID(this.username);
+//		
+//			User user = repo.findByUsername(this.username);
+//			
+//			System.out.println(user.getCompanyID());
+//			model.addAttribute("user",user);
+//	
+//		return "accountBus";
+//	}
+	
+	@GetMapping("/remove_duplicates")
+	public String removeDuplicates(RedirectAttributes ra) {
+	
+			ra.addFlashAttribute("message","Failed to remove duplicates");
+			
+			return "redirect:/main";
+	
+	}
+	
+	@GetMapping("/fill_missing")
+	public String fillMissingValues(RedirectAttributes ra) {
+	
+			ra.addFlashAttribute("message","Failed to fill in missing values");
+			
+			return "redirect:/main";
+	
 	}
 }
