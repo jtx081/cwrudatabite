@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/charts.css">
  
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
+    <script src="../static/js/parser.js"></script>
     <title>Charts</title>
     
 </head>
@@ -142,17 +143,18 @@
 
         // Generate individual charts
         function generatePolarArea() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
             let chart = document.getElementById('pa').getContext('2d');
 
             polarArea = new Chart(chart, {
                 type: 'polarArea',
                 data: {
-                    datasets: [{
-                        data: [100, 20, 32, 68, 92, 44, 45], // dummy
-                        backgroundColor: ['rgba(0, 0, 225, .1)', 'rgba(0, 0, 225, .2)', 'rgba(0, 0, 225, .4)', 'rgba(0, 0, 225, .6)', 'rgba(0, 0, 225, .8)', 'rgba(0, 0, 225, .9)', 'rgba(0, 0, 225, 1)'],
-                        borderWidth: 1,
-                        borderColor: '#777'
-                    }]
+                    datasets: []
                 },
                 options: {
                     title: {
@@ -166,12 +168,16 @@
                     tooltips: {
                         enabled: false
                     },
-                    animation: {
-                        onComplete: function() { console.log(polarArea.toBase64Image()); }
-                    },
                     animation: false
                 }
             });
+
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData.length; i++) {
+                polarArea.data.datasets.push(formatPHLDatasets(myData, i));
+            }
+            polarArea.update();
 
             // Download
             console.log(polarArea.toBase64Image());
@@ -184,17 +190,20 @@
 
 
         function generateHistogram() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
             let chart = document.getElementById('h').getContext('2d');
 
             histogram = new Chart(chart, {
                 type: 'bar',
                 data: {
-                    datasets: [{
-                        data: [100, 548, 230, 634, 203, 654, 29, 854, 583, 311, 230], // dummy
-                        backgroundColor: 'rgba(0, 0, 225, .5)',
-                        borderWidth: 1,
-                        borderColor: '#777'
-                    }]
+                    labels: myLabels,
+                    datasets: []
+                    
                 },
                 options: {
                     title: {
@@ -212,6 +221,13 @@
                 }
             });
 
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData.length; i++) {
+                histogram.data.datasets.push(formatPHLDatasets(myData, i));
+            }
+            histogram.update();
+
             // Download
             console.log(histogram.toBase64Image());
             var a = document.createElement('a');
@@ -223,16 +239,19 @@
 
 
         function generateLineGraph() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
             let chart = document.getElementById('lg').getContext('2d');
 
             lineGraph = new Chart(chart, {
                 type: 'line',
                 data: {
-                    datasets: [{
-                        data: [100, 200, 300, 45, 765, 352, 560, 548, 567, 432, 930, 968], // dummy
-                        borderColor: ['rgba(0, 0, 225, .5)'],
-                        fill: false
-                    }]
+                    labels: myLabels,
+                    datasets: []
                 },
                 options: {
                     title: {
@@ -250,6 +269,13 @@
                 }
             });
 
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData.length; i++) {
+                lineGraph.data.datasets.push(formatPHLDatasets(myData, i));
+            }
+            lineGraph.update();
+
             // Download
             console.log(lineGraph.toBase64Image());
             var a = document.createElement('a');
@@ -261,13 +287,19 @@
 
 
         function generateScatterPlot() {
+            // Generate the labels and data sets
+            var myStr = localStorage.getItem("dataString")
+            var myLabels = getLabels(myStr);
+            var myData = getData(myStr);
+
+            // Create the chart
             let chart = document.getElementById('sp').getContext('2d');
 
             scatterPlot = new Chart(chart, {
                 type: 'scatter',
                 data: {
                     datasets: [{
-                        data: [{x:100, y:100}, {x:26, y:05}, {x:12, y:42}, {x:73, y:92}, {x:17, y:25}, {x:97, y:82}, {x:27, y:86}, {x:45, y:56}, {x:93, y:34}, {x:23, y:45}], // dummy
+                        data: [], 
                         backgroundColor: 'rgba(0, 0, 225, .5)',
                     }]
                 },
@@ -286,6 +318,13 @@
                     animation: false
                 }
             });
+
+            // Add the datasets
+            var i;
+            for (i = 0; i < myData[0].length; i++) {
+                scatterPlot.data.datasets.data.push(formatSDatasets(myData, i));
+            }
+            scatterPlot.update();
 
             // Download
             console.log(scatterPlot.toBase64Image());
@@ -366,6 +405,12 @@
             // Color scheme
         }
 
+
+
+
+        let myBlob = new Blob(['month,day,year\n1,2,3\n4,5,6\n7,8,9'], {type: 'text/plain'})
+        storeBlob(myBlob);
+        generateScatterPlot();
     </script>
 
 </body>
