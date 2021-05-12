@@ -322,7 +322,7 @@
             // Add the datasets
             var i;
             for (i = 0; i < myData[0].length; i++) {
-                scatterPlot.data.datasets.data.push(formatSDatasets(myData, i));
+                scatterPlot.data.datasets[0].data.push(formatSDatasets(myData, i));
             }
             scatterPlot.update();
 
@@ -404,13 +404,6 @@
 
             // Color scheme
         }
-
-
-
-
-        let myBlob = new Blob(['month,day,year\n1,2,3\n4,5,6\n7,8,9'], {type: 'text/plain'})
-        storeBlob(myBlob);
-        generateScatterPlot();
     </script>
 
 </body>
