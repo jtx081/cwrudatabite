@@ -7,44 +7,41 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="dataset")
+@Table(name = "dataset")
 public class Dataset {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int datasetID;
-	
-	@Column(length = 512, nullable=false)
+
+	@Column(length = 512, nullable = false)
 	private String name;
 	private long size;
-	
-	@Column(name="upload_time")
+
+	@Column(name = "upload_time")
 	private Date uploadTime;
-	
-	private byte[] content;
-	
-		
+
+	private String content;
+
 	private String username;
-//	@ManyToOne
-//	@JoinColumn(name="username", nullable=false)
-//	private String username;
-	
+	// @ManyToOne
+	// @JoinColumn(name="username", nullable=false)
+	// private String username;
+
 	public Dataset() {
-		
+
 	}
-	
+
 	public Dataset(int datasetID, String name, long size) {
 		this.datasetID = datasetID;
 		this.name = name;
 		this.size = size;
-		
+
 	}
-	
+
 	public int getDatasetID() {
 		return datasetID;
 	}
@@ -77,11 +74,11 @@ public class Dataset {
 		this.uploadTime = uploadTime;
 	}
 
-	public byte[] getContent() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setContent(byte[] content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -92,8 +89,5 @@ public class Dataset {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-	
-	
-	
-	
+
 }
