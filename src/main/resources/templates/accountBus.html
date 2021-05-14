@@ -113,8 +113,8 @@
                         	<td>[[${data.accountType}]]</td>
                         	<td class="hidden">
   								
-  								<a th:href="@{/account/remove/{id}(id=${data.username})}" title="Upgrade user"  class="btn btn-outline-primary account-upgrade">Upgrade to admin</a>
-  								<a th:href="@{/account/remove/{id}(id=${data.username})}" title="Delete dataset" onClick="return confirm('Are you sure you want to remove?')"  class="btn btn-danger">Remove Account</a>
+  								<a th:href="@{/account/upgrade/{id}(id=${data.username})}" title="Upgrade User"  class="btn btn-outline-primary account-upgrade">Upgrade to admin</a>
+  								<a th:href="@{/account/remove/{id}(id=${data.username})}" title="Remove Account" onClick="return confirm('Are you sure you want to remove?')"  class="btn btn-danger">Remove Account</a>
  							 </td>
                         	
                        

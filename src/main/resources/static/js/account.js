@@ -1,21 +1,21 @@
 // scripts for account.html
 
-window.onload = function() {
-  let xhr = new XMLHttpRequest()
-  xhr.open("GET", "/companyadmin/getcompanyusers", true)
-  xhr.onreadystatechange = function () {
-    if(xhr.readyState === XMLHttpRequest.DONE) {
-      var status = xhr.status;
-      if (status === 0 || (status >= 200 && status < 400)) {
-        // The request has been completed successfully
-        console.log(xhr.responseText);
-      } else {
-        // Oh no! There has been an error with the request!
-      }
-    }
-  };
-  xhr.send();
-}
+// window.onload = function() {
+//   let xhr = new XMLHttpRequest()
+//   xhr.open("GET", "/companyadmin/getcompanyusers", true)
+//   xhr.onreadystatechange = function () {
+//     if(xhr.readyState === XMLHttpRequest.DONE) {
+//       var status = xhr.status;
+//       if (status === 0 || (status >= 200 && status < 400)) {
+//         // The request has been completed successfully
+//         console.log(xhr.responseText);
+//       } else {
+//         // Oh no! There has been an error with the request!
+//       }
+//     }
+//   };
+//   xhr.send();
+// }
 
 // check whether the password can be sent to the server
 function validatePassword() {

@@ -217,6 +217,20 @@ public class AppController {
 		return "tutorial";
 	}
 
+	@RequestMapping("/account/upgrade/{username}")
+	public String upgradeAccount(@PathVariable String username, RedirectAttributes ra) {
+		User user = repo.findByUsername(username);
+		if (user == null) {
+			ra.addFlashAttribute("message", "Failed to upgrade user");
+			return "redirect:/accountBus";
+		}
+
+		user.setAccountType("Company Admin");
+		repo.save(user);
+
+		return "accountBus";
+	}
+
 	@RequestMapping("/account/delete/{username}")
 	public String deleteAccount(@PathVariable String username) {
 
@@ -228,13 +242,6 @@ public class AppController {
 		repo.deleteFromId(username);
 		return "redirect:/home";
 	}
-
-	// @RequestMapping("/account/update_password/{username}")
-	// public String updatePassword(@PathVariable String username, User user) {
-	// System.out.print(user.getPassword());
-	// return "accountBus";
-	//
-	// }
 
 	@RequestMapping("/account/update_password")
 	public String updatePassword(@RequestParam("password") String password) {
