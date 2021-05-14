@@ -50,7 +50,7 @@ public class AppController {
 	
 	@GetMapping("/register_type")
 	public String showRegisterType() {
-		return "registration";
+		return "registration2";
 	}
 	
 	@GetMapping("/file_upload")
@@ -82,13 +82,13 @@ public class AppController {
 	@GetMapping("/register_individual")
 	public String showIndividualReg(Model model) {
 		model.addAttribute("user", new User());
-		return "individualregistration";
+		return "individualreg";
 	}
 	
 	@GetMapping("/register_business")
 	public String showBusinessReg(Model model) {
 		model.addAttribute("user", new User());
-		return "businessregistration";
+		return "businessreg";
 	}
 	
 	@GetMapping("/account")
@@ -149,7 +149,7 @@ public class AppController {
 	public String viewUsersList(Model model) {		
 //		List<Dataset> listData = datarepo.findAll();
 //		model.addAttribute("listData", listData);
-		return "main";
+		return "main2";
 	}
 	
 	@RequestMapping("/main/{username}")
@@ -160,11 +160,11 @@ public class AppController {
 			String companyUsername = companyAdmin.getUsername();
 			List<Dataset> listData = datarepo.findByUsernameAndComp(username, companyUsername);
 			model.addAttribute("listData", listData);
-			return "main";
+			return "main2";
 		}
 		List<Dataset> listData= datarepo.findByUsername(username);
 		model.addAttribute("listData", listData);
-		return "main";
+		return "main2";
 	}
 	
 	@RequestMapping("/main/delete_dataset/{id}")

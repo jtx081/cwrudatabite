@@ -21,7 +21,7 @@ import org.springframework.test.annotation.Rollback;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = Replace.NONE)
-@Rollback(false)
+@Rollback(true)
 public class DatasetRepositoryTest {
 	@Autowired
 	private DatasetRepository repo;
@@ -58,38 +58,110 @@ public class DatasetRepositoryTest {
 	
 	@Test
 	public void testDeleteDataset() {
+		repo.deleteFromId("42");
 		
-		
-		repo.deleteFromId("15");
-		
-		Dataset data = repo.findByDatasetId(15);
+		Dataset data = repo.findByDatasetId(42);
 		
 		assertThat(data).isNull();
 	}
 	
 	@Test
-	public void testGetFile() throws IOException {
-		String fileName = repo.getFilename(31);
-		byte[] bytes = repo.getFile(31);
+	public void testFindAllDataset() {
+		assertThat(repo.findAll().size()).isEqualTo(2);
+	}
+	
+	@Test
+	public void testFindByUsername() {
+		assertThat(repo.findByUsername("testcomp1@domain.com").size()).isEqualTo(1);
+	}
+	
+	@Test
+	public void testGetFilename() {
+		assertThat(repo.getFilename(42)).isEqualTo("atestdataset.csv");
+	}
+	
+	@Test
+	public void testFindByUsernameAndComp() {
+		assertThat(repo.findByUsernameAndComp("demo1@domain.com", "testcomp1@domain.com").size()).isEqualTo(2);
+	}
+	
+	@Test
+	public void testDeleteFromUsername() {
+		repo.deleteFromUsername("demo1@domain.com");
 		
-//		File newFile = new File(fileName);
-//		newFile.createNewFile();
-//		
-//		OutputStream os = new FileOutputStream(newFile);
-//		os.write(bytes);
-//		os.close();
-//		FileInputStream fis = new FileInputStream(newFile);
-//		
-//		fis.read(bytes);
-//		fis.close();
-//		String s = new String(bytes);
-//		
-//		System.out.println(s);
+	
+		assertThat(repo.findByUsername("demo1@domain.com")).isEmpty();
+	}
+	
+	@Test
+	public void testGetName() throws IOException {
+		File file = new File("/Users/joannatyan/Downloads/atestdataset.csv");
+		Dataset dataset = new Dataset();
 		
+		dataset.setName(file.getName());
 		
+		byte[] bytes = Files.readAllBytes(file.toPath());
+		dataset.setContent(bytes);
+		long fileSize = bytes.length;
+		dataset.setSize(fileSize);
 		
-		assertThat(bytes).isNotNull();
+		dataset.setUploadTime(new Date());
 		
+		dataset.setUsername("10");
+	
 		
+		assertThat(dataset.getName()).isEqualTo("atestdataset.csv");
+
+	}
+	
+	@Test
+	public void testGetUploadTime() throws IOException {
+		File file = new File("/Users/joannatyan/Downloads/atestdataset.csv");
+		Dataset dataset = new Dataset();
+		
+		dataset.setName(file.getName());
+		
+		byte[] bytes = Files.readAllBytes(file.toPath());
+		dataset.setContent(bytes);
+		long fileSize = bytes.length;
+		dataset.setSize(fileSize);
+		
+		Date time = new Date();
+		dataset.setUploadTime(time);
+		
+		dataset.setUsername("10");
+		
+		assertThat(dataset.getUploadTime()).isEqualTo(time);
+	}
+	
+	@Test
+	public void testSetDataset() {
+		Dataset dataset = new Dataset(1, "test", 12);
+		
+		dataset.setDatasetID(3);
+		
+		assertThat(dataset.getDatasetID()).isEqualTo(3);
+	}
+	
+	@Test
+	public void testGetUsername() {
+		Dataset dataset = new Dataset();
+		
+		dataset.setUsername("hello@domain.com");
+		
+		assertThat(dataset.getUsername()).isEqualTo("hello@domain.com");
+	}
+	
+	@Test
+	public void testGetContent() throws IOException {
+		File file = new File("/Users/joannatyan/Downloads/atestdataset.csv");
+		Dataset dataset = new Dataset();
+		
+		dataset.setName(file.getName());
+		
+		byte[] bytes = Files.readAllBytes(file.toPath());
+		dataset.setContent(bytes);
+		
+		assertThat(dataset.getContent()).isNotEmpty();
 	}
 }

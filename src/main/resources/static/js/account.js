@@ -19,7 +19,7 @@ window.onload = function() {
 
 // check whether the password can be sent to the server
 function validatePassword() {
-  let oldPass = new Password(dom('#oldPassword').value)
+//  let oldPass = new Password(dom('#oldPassword').value)
   let newPass = new Password(dom('#newPassword').value)
   let newPassConfirm = new Password(dom('#newPassword2').value)
   let errorPrompt = dom('#passwordError')
@@ -32,10 +32,10 @@ function validatePassword() {
     errorPrompt.innerText = "New password must be at least 8 characters"
     return false
   }
-  if (!oldPass.matchStr("test")) {
+//  if (!oldPass.matchStr("test")) {
     errorPrompt.innerText = "Incorrect password"
     return false
-  }
+ // }
   errorPrompt.innerText = ""
   return true
 }
