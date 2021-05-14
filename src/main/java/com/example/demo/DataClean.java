@@ -4,19 +4,36 @@ import cwru.databite.databite.Interface.IDataClean;
 
 import java.util.stream.Collectors;
 import java.util.*;
+import java.io.File;
+import java.io.IOException;
 
 
 public class DataClean implements IDataClean {
-    Double[][] inputData;
+    private double[][] inputData;
 
-    public DataClean(Double[][] inputData) {
-        this.inputData = inputData;
+    public DataClean(int m, int n, double t) { //create your own inputData matrix by editiing this constructor
+        this.inputData = new double[m][n];
+        
+        for (int i=0; i<m; i++) {
+            for (int j=0; j<n; j++) {
+                inputData[i][j] = (i+j%5)/t;
+            }
+        }
     }
-    
-    public Double[][] getInputdata() {
+
+    public DataClean(File file) { //load data from FileHandler class
+        FileHandler fh = new FileHandler();
+        try {
+            this.inputData = fh.convertToData(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public double[][] getInputdata() {
         return this.inputData;
     }
-
     public void editCellVal(Double[][] dataSet, int i, int j, double n) {
         dataSet[i][j] = n;
     }
