@@ -3,10 +3,16 @@ package cwru.databite.databite.Implementation;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.nio.file.*;
 
 public class FileHandler {
 
 	Object file;
+	
+	public FileHandler() {
+		//body
+	}
 
 	public boolean checkFileType(File file) {
 		String fileName = file.getName();
