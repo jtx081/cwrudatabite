@@ -27,7 +27,18 @@ function getData(dataString) {
         rows[i] = rows[i].split(',');
     }
 
-    return rows;
+    var columns = new Array();
+    var j;
+    for (j = 0; j < rows[0].length; j++) {
+        var k;
+        var oneColumn = new Array();
+        for (k = 0; k < rows.length; k++) {
+            oneColumn.push(rows[k][j]);
+        }
+        columns.push(oneColumn);
+    }
+
+    return columns;
 }
 
 // Format the "datasets:" section of a polar area chart, histogram, or line graph
@@ -47,4 +58,36 @@ function formatSDatasets(data, index) {
         x: data[0][index],
         y: data[1][index]
     }
+}
+
+// Format the "data:" section of a box plot
+function formatBDatasets(data, labels) {
+
+    var jsonData = [];
+
+    var i;
+    for (i = 0; i < data.length; i++) {
+        jsonData.push({
+            x: labels[i],
+            y: data[i]
+        });
+    }
+
+    return jsonData;
+}
+
+// Format the "series:" section of a box plot
+function formatHDatasets(data, labels) {
+
+    var jsonData = [];
+
+    var i;
+    for (i = 0; i < data.length; i++) {
+        jsonData.push({
+            name: labels[i],
+            data: data[i]
+        });
+    }
+
+    return jsonData;
 }
