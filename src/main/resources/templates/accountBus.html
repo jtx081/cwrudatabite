@@ -62,19 +62,16 @@
             Change Password
           </div>
           <div class="card-body">
-            <form id="changePasswordForm" action="/user/updatepassword" method="put">
-          <!--     <div class="mb-3">
-                <label for="oldPassword" class="form-label">Enter Old Password</label>
-                <input type="password" id="oldPassword" class="form-control">
-              </div> -->
+            <form th:action="@{/user/updatepassword/{username}(username=${#request.userPrincipal.principal.fullName})}" 
+             id="changePasswordForm" method="post">
               <div class="mb-3">
                 <label for="newPassword" class="form-label">Enter New Password</label>
-                <input name="password" type="password" id="newPassword" class="form-control">
+                <input type="password" id="newPassword" class="form-control">
                 <div class="form-text">Must be at least 8 characters</div>
               </div>
               <div class="mb-3">
                 <label for="newPassword2" class="form-label">Re-enter New Password</label>
-                <input type="password" id="newPassword2" class="form-control">
+                <input name="newPassword" type="password" id="newPassword2" class="form-control">
                 <div class="form-text text-danger" id="passwordError"></div>
               </div>
               <button id="changePassword" type="submit" class="btn btn-primary">Change Password</button>
@@ -116,8 +113,8 @@
                         	<td>[[${data.accountType}]]</td>
                         	<td class="hidden">
   								
-  								<a th:href="@{/account/remove/{id}(id=${data.username})}" title="Upgrade user"  class="btn btn-outline-primary account-upgrade">Upgrade to admin</a>
-  								<a th:href="@{/account/remove/{id}(id=${data.username})}" title="Delete dataset" onClick="return confirm('Are you sure you want to remove?')"  class="btn btn-danger">Remove Account</a>
+  								<a th:href="@{/account/upgrade/{id}(id=${data.username})}" title="Upgrade User"  class="btn btn-outline-primary account-upgrade">Upgrade to admin</a>
+  								<a th:href="@{/account/remove/{id}(id=${data.username})}" title="Remove Account" onClick="return confirm('Are you sure you want to remove?')"  class="btn btn-danger">Remove Account</a>
  							 </td>
                         	
                        

@@ -1,25 +1,25 @@
 // scripts for account.html
 
-window.onload = function() {
-  let xhr = new XMLHttpRequest()
-  xhr.open("GET", "/companyadmin/getcompanyusers", true)
-  xhr.onreadystatechange = function () {
-    if(xhr.readyState === XMLHttpRequest.DONE) {
-      var status = xhr.status;
-      if (status === 0 || (status >= 200 && status < 400)) {
-        // The request has been completed successfully
-        console.log(xhr.responseText);
-      } else {
-        // Oh no! There has been an error with the request!
-      }
-    }
-  };
-  xhr.send();
-}
+// window.onload = function() {
+//   let xhr = new XMLHttpRequest()
+//   xhr.open("GET", "/companyadmin/getcompanyusers", true)
+//   xhr.onreadystatechange = function () {
+//     if(xhr.readyState === XMLHttpRequest.DONE) {
+//       var status = xhr.status;
+//       if (status === 0 || (status >= 200 && status < 400)) {
+//         // The request has been completed successfully
+//         console.log(xhr.responseText);
+//       } else {
+//         // Oh no! There has been an error with the request!
+//       }
+//     }
+//   };
+//   xhr.send();
+// }
 
 // check whether the password can be sent to the server
 function validatePassword() {
-//  let oldPass = new Password(dom('#oldPassword').value)
+  //let oldPass = new Password(dom('#oldPassword').value)
   let newPass = new Password(dom('#newPassword').value)
   let newPassConfirm = new Password(dom('#newPassword2').value)
   let errorPrompt = dom('#passwordError')
@@ -33,8 +33,8 @@ function validatePassword() {
     return false
   }
 //  if (!oldPass.matchStr("test")) {
-    errorPrompt.innerText = "Incorrect password"
-    return false
+//    errorPrompt.innerText = "Incorrect password"
+ //   return false
  // }
   errorPrompt.innerText = ""
   return true
@@ -151,16 +151,16 @@ doms('.account-upgrade').forEach(e => e.addEventListener('click', function() {
   getObserver(this).innerText = "Admin"
 }))
 
-dom('#changePassword').addEventListener('click', function(event) {
-  event.preventDefault() // prevent form from sending to server before validation
-  let success = validatePassword()
-  if (success) {
-    let form = new FormData(dom('#changePasswordForm'))
-    let xhr = new XMLHttpRequest()
-    xhr.open("put", "user/updatepassword")
-    xhr.send(form)
-  }
-})
+// dom('#changePassword').addEventListener('click', function(event) {
+//   event.preventDefault() // prevent form from sending to server before validation
+//   let success = validatePassword()
+//   if (success) {
+//     let form = new FormData(dom('#changePasswordForm'))
+//     let xhr = new XMLHttpRequest()
+//     xhr.open("put", "user/updatepassword")
+//     xhr.send(form)
+//   }
+// })
 
 dom('#editmanageableuserstable').addEventListener('click', function() {
   doms('#manageableuserstable .hidden').forEach(e => e.classList.remove('hidden'))
