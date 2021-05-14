@@ -26,8 +26,8 @@ public interface DatasetRepository extends JpaRepository<Dataset,Long>{
 	@Query(value = "SELECT * FROM dataset d WHERE d.username=?1 ORDER BY d.upload_time DESC", nativeQuery=true)
 	List<Dataset> findByUsername(String username);
 
-	@Query(value = "SELECT d.content FROM dataset d WHERE d.datasetID=?1", nativeQuery=true)
-	byte[] getFile(int datasetID);
+//	@Query(value = "SELECT d.content FROM dataset d WHERE d.datasetID=?1", nativeQuery=true)
+//	byte[] getFile(int datasetID);
 	
 	@Query(value = "SELECT d.name FROM dataset d WHERE d.datasetID=?1", nativeQuery=true)
 	String getFilename(int datasetID);

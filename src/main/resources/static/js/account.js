@@ -32,10 +32,10 @@ function validatePassword() {
     errorPrompt.innerText = "New password must be at least 8 characters"
     return false
   }
-  //if (!oldPass.matchStr("test")) {
-  //  errorPrompt.innerText = "Incorrect password"
-  //  return false
-  //}
+//  if (!oldPass.matchStr("test")) {
+//    errorPrompt.innerText = "Incorrect password"
+ //   return false
+ // }
   errorPrompt.innerText = ""
   return true
 }
