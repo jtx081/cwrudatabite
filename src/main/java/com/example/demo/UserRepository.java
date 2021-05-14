@@ -19,10 +19,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	@Query(value = "DELETE FROM user u WHERE u.username = ?1", nativeQuery= true)
 	void deleteFromId(String username);
 	
-	@Transactional
-	@Modifying
-	@Query(value = "UPDATE user u SET u.password=?2 WHERE u.username = ?1", nativeQuery= true)
-	void updatePassword(String username, String password);
+//	@Transactional
+//	@Modifying
+//	@Query(value = "UPDATE user u SET u.password=?2 WHERE u.username = ?1", nativeQuery= true)
+//	void updatePassword(String username, String password);
 	
 	@Query(value = "SELECT * FROM user u WHERE u.username = ?1 AND u.account_type='Company Admin'", nativeQuery = true)
 	User findCompanyAccount(String username);
