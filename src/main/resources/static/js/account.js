@@ -19,7 +19,7 @@ window.onload = function() {
 
 // check whether the password can be sent to the server
 function validatePassword() {
-  let oldPass = new Password(dom('#oldPassword').value)
+  //let oldPass = new Password(dom('#oldPassword').value)
   let newPass = new Password(dom('#newPassword').value)
   let newPassConfirm = new Password(dom('#newPassword2').value)
   let errorPrompt = dom('#passwordError')
@@ -32,10 +32,10 @@ function validatePassword() {
     errorPrompt.innerText = "New password must be at least 8 characters"
     return false
   }
-  if (!oldPass.matchStr("test")) {
-    errorPrompt.innerText = "Incorrect password"
-    return false
-  }
+  //if (!oldPass.matchStr("test")) {
+  //  errorPrompt.innerText = "Incorrect password"
+  //  return false
+  //}
   errorPrompt.innerText = ""
   return true
 }
@@ -151,16 +151,16 @@ doms('.account-upgrade').forEach(e => e.addEventListener('click', function() {
   getObserver(this).innerText = "Admin"
 }))
 
-dom('#changePassword').addEventListener('click', function(event) {
-  event.preventDefault() // prevent form from sending to server before validation
-  let success = validatePassword()
-  if (success) {
-    let form = new FormData(dom('#changePasswordForm'))
-    let xhr = new XMLHttpRequest()
-    xhr.open("put", "user/updatepassword")
-    xhr.send(form)
-  }
-})
+// dom('#changePassword').addEventListener('click', function(event) {
+//   event.preventDefault() // prevent form from sending to server before validation
+//   let success = validatePassword()
+//   if (success) {
+//     let form = new FormData(dom('#changePasswordForm'))
+//     let xhr = new XMLHttpRequest()
+//     xhr.open("put", "user/updatepassword")
+//     xhr.send(form)
+//   }
+// })
 
 dom('#editmanageableuserstable').addEventListener('click', function() {
   doms('#manageableuserstable .hidden').forEach(e => e.classList.remove('hidden'))
