@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.io.File;
 import com.example.demo.FileHandler;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -204,7 +205,7 @@ public class AppController {
 		String filePath = System.getProperty("user.dir") + result.getContent();
 		FileHandler fh =  new FileHandler();
 		double[][] data = fh.convertToData(new File(filePath));
-		model.addAttribute("data",data.toString());
+		model.addAttribute("chartData", Arrays.deepToString(data));
 		return "charts";
 	}
 
