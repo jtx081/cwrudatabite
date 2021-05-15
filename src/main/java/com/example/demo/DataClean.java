@@ -1,6 +1,4 @@
-package cwru.databite.databite.Implementation;
-
-import cwru.databite.databite.Interface.IDataClean;
+package com.example.demo; 
 
 import java.util.stream.Collectors;
 import java.util.*;
@@ -8,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 
-public class DataClean implements IDataClean {
+public class DataClean {
     private double[][] inputData;
 
     public DataClean(int m, int n, double t) { //create your own inputData matrix by editiing this constructor
@@ -16,7 +14,7 @@ public class DataClean implements IDataClean {
         
         for (int i=0; i<m; i++) {
             for (int j=0; j<n; j++) {
-                inputData[i][j] = (i+j%5)/t;
+                inputData[i][j] = (i+j)/t;
             }
         }
     }
@@ -30,28 +28,44 @@ public class DataClean implements IDataClean {
         }
     }
 
-
     public double[][] getInputdata() {
         return this.inputData;
     }
-    public void editCellVal(Double[][] dataSet, int i, int j, double n) {
+
+    public void editCellVal(double[][] dataSet, int i, int j, double n) {
         dataSet[i][j] = n;
     }
 
-    public Double[][] deleteRow(Double[][] dataSet, int delete_row_index) {
-        Double[][] newData = new Double[dataSet.length - 1][dataSet[0].length];
-        for (int i=0,j=0; i < dataSet.length-1 && j<dataSet.length; i++) {
-            for (int k = 0; k < dataSet[0].length; k++) {
-                if (i != delete_row_index) {
-                    newData[j++][k] = dataSet[i][j];
+    public double[][] deleteRow(double[][] dataSet, int delete_row_index) {
+        double[][] newData = new double[dataSet.length-1][dataSet[0].length];
+        int n=0;
+        if (delete_row_index==dataSet.length-1) {
+            for (int i=0;i<dataSet.length-1; i++) {
+                for (int j=0;j<dataSet[0].length;j++) {
+                    if (delete_row_index==i) {
+                        i++;
+                    }
+                    newData[n][j]=dataSet[i][j];
                 }
+                n++;
+            }
+        }
+        else {
+            for (int i=0;i<dataSet.length; i++) {
+                for (int j=0;j<dataSet[0].length;j++) {
+                    if(delete_row_index==i) {
+                        i++;
+                    } 
+                    newData[n][j]=dataSet[i][j];
+                }
+                n++;
             }
         }
         return newData;
     }
 
-    public Double[][] deleteColumn(Double[][] dataSet, int delete_col_index) {
-        Double[][] newData = new Double[dataSet.length][dataSet[0].length-1];
+    public double[][] deleteColumn(double[][] dataSet, int delete_col_index) {
+        double[][] newData = new double[dataSet.length][dataSet[0].length-1];
         for (int i=0; i < dataSet.length; i++) {
             for (int j=0, k=0; j < dataSet[0].length-1 && k < dataSet[0].length; j++) {
                 if (j != delete_col_index) {
@@ -97,25 +111,25 @@ public class DataClean implements IDataClean {
 
 
     //Standardization: rescale to mean-zero and unit standard deviation 
-   public Double[][] standardize(Double[][] dataSet) {
-       Double sum=0.0;
+   public double[][] standardize(double[][] dataSet) {
+       double sum=0.0;
        for (int i=0;i<dataSet.length;i++){
            for (int j=0; j<dataSet[0].length;j++){
                sum += dataSet[i][j];
            }
        }
-        Double mean = sum/(dataSet.length*dataSet[0].length);
-        Double std = 0.0;
+        double mean = sum/(dataSet.length*dataSet[0].length);
+        double std = 0.0;
         //compute standard deviation
-        for (Double[] i: dataSet) {
-            for (Double ij: i) {
+        for (double[] i: dataSet) {
+            for (double ij: i) {
                 std += Math.pow(ij-mean,2.0); 
             }
         }
         std = Math.sqrt(std/ (dataSet.length * dataSet[0].length));
 
         
-        Double[][] newData = new Double[dataSet.length][dataSet[0].length];
+        double[][] newData = new double[dataSet.length][dataSet[0].length];
         for (int i=0; i<dataSet.length; i++) {
             for (int j=0; j<dataSet[0].length; j++) {
                 newData[i][j]= (dataSet[i][j]-mean)/std;
@@ -124,7 +138,7 @@ public class DataClean implements IDataClean {
         return newData;
     } 
 
-    @Override
+    //@Override
     public void toDense(double[][] dataSet) {
         int count = 0;
         for (int i = 0; i < dataSet.length; i++) {
@@ -150,7 +164,7 @@ public class DataClean implements IDataClean {
 
     }
 
-    @Override
+    //@Override
     public double[] average(double[][] dataSet) {
         double[] averageOnRows = new double[dataSet.length];
         for (int i = 0; i < dataSet.length; i++) {
