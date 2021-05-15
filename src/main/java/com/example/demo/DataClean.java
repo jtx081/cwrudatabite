@@ -1,15 +1,18 @@
+<<<<<<< Updated upstream
 package com.example.demo; 
+=======
+package com.example.demo;
+>>>>>>> Stashed changes
 
 import java.util.stream.Collectors;
 import java.util.*;
 import java.io.File;
 import java.io.IOException;
 
-
 public class DataClean {
     private double[][] inputData;
 
-    public DataClean(int m, int n, double t) { //create your own inputData matrix by editiing this constructor
+    public DataClean(int m, int n, double t) { // create your own inputData matrix by editiing this constructor
         this.inputData = new double[m][n];
         
         for (int i=0; i<m; i++) {
@@ -19,7 +22,7 @@ public class DataClean {
         }
     }
 
-    public DataClean(File file) { //load data from FileHandler class
+    public DataClean(File file) { // load data from FileHandler class
         FileHandler fh = new FileHandler();
         try {
             this.inputData = fh.convertToData(file);
@@ -76,17 +79,15 @@ public class DataClean {
         return newData;
     }
 
-    //helper function to convert 2d array to array list
+    // helper function to convert 2d array to array list
     public static ArrayList<Double> twoDArrToArrList(Double[][] dataSet) {
-        List<Double> collection = Arrays.stream(dataSet)  
-            .flatMap(Arrays::stream)
-            .collect(Collectors.toList());
+        List<Double> collection = Arrays.stream(dataSet).flatMap(Arrays::stream).collect(Collectors.toList());
 
-        ArrayList<Double> arrList = new ArrayList<Double>(collection);   
-        return arrList; 
+        ArrayList<Double> arrList = new ArrayList<Double>(collection);
+        return arrList;
     }
 
-    //returns a unique list of values in a possibly large sparse matrix
+    // returns a unique list of values in a possibly large sparse matrix
     public List<Double> unique(Double[][] dataSet) {
         ArrayList<Double> uniqueList = DataClean.twoDArrToArrList(dataSet);
         List<Double> uniqueNumbers = uniqueList.stream().distinct().collect(Collectors.toList());
@@ -94,21 +95,19 @@ public class DataClean {
         return uniqueNumbers;
     }
 
-    //Normalization: rescale values into range in [0,1]
+    // Normalization: rescale values into range in [0,1]
     public Double[][] normalize(Double[][] dataSet) {
         Double maxVal = Collections.max(DataClean.twoDArrToArrList(dataSet));
-        Double minVal = Collections.min(DataClean.twoDArrToArrList(dataSet)); 
-        
+        Double minVal = Collections.min(DataClean.twoDArrToArrList(dataSet));
+
         Double[][] newData = new Double[dataSet.length][dataSet[0].length];
-        for (int i=0; i<dataSet.length; i++) {
-            for (int j=0; j<dataSet[0].length; j++) {
-                newData[i][j]= (dataSet[i][j]-minVal)/(maxVal-minVal);
+        for (int i = 0; i < dataSet.length; i++) {
+            for (int j = 0; j < dataSet[0].length; j++) {
+                newData[i][j] = (dataSet[i][j] - minVal) / (maxVal - minVal);
             }
         }
         return newData;
     }
-
-
 
     //Standardization: rescale to mean-zero and unit standard deviation 
    public double[][] standardize(double[][] dataSet) {
@@ -126,7 +125,7 @@ public class DataClean {
                 std += Math.pow(ij-mean,2.0); 
             }
         }
-        std = Math.sqrt(std/ (dataSet.length * dataSet[0].length));
+        std = Math.sqrt(std / (dataSet.length * dataSet[0].length));
 
         
         double[][] newData = new double[dataSet.length][dataSet[0].length];
@@ -136,7 +135,7 @@ public class DataClean {
             }
         }
         return newData;
-    } 
+    }
 
     //@Override
     public void toDense(double[][] dataSet) {
