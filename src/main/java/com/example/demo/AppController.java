@@ -1,12 +1,14 @@
 package com.example.demo;
 
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -67,9 +69,16 @@ public class AppController {
 		String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
 		Dataset dataset = new Dataset();
+		dataset.setName(Paths.get("").toString());
+		String datasetsDir = System.getProperty("user.dir") + "/src/datasets/";
+		while (Files.exists(Paths.get(datasetsDir + fileName)) == true) { // appends character to prevent override
+			fileName = fileName.substring(0, fileName.lastIndexOf(".")) + "_1"
+					+ fileName.substring(fileName.lastIndexOf("."));
+		}
+		File file = new File(datasetsDir + fileName);
+		multipartFile.transferTo(file);
+		dataset.setContent("/src/datasets/" + fileName);
 		dataset.setName(fileName);
-
-		dataset.setContent(multipartFile.getBytes());
 		dataset.setSize(multipartFile.getSize());
 		dataset.setUploadTime(new Date());
 		dataset.setUsername(username);
@@ -188,8 +197,9 @@ public class AppController {
 		return "redirect:/main";
 	}
 
-	@GetMapping("/charts")
-	public String showCharts() {
+	@GetMapping("/charts/{id}")
+	public String showCharts(@PathVariable String id) {
+
 		return "charts";
 	}
 
@@ -206,7 +216,7 @@ public class AppController {
 
 		ServletOutputStream outputStream = response.getOutputStream();
 
-		outputStream.write(result.getContent());
+		// outputStream.write(result.getContent());
 
 		outputStream.close();
 
