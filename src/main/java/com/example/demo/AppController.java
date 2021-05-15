@@ -70,13 +70,15 @@ public class AppController {
 
 		Dataset dataset = new Dataset();
 		dataset.setName(Paths.get("").toString());
-		String datasetsDir = "./datasets/";
-			// while (Files.exists(Paths.get(datasetsDir + fileName)) == true) {
-			// 	fileName += "_1"; // appends character to prevent override
-			// }
-		File file = new File(datasetsDir + "index.csv");
+		String datasetsDir = System.getProperty("user.dir") + "/src/datasets/";
+		while (Files.exists(Paths.get(datasetsDir + fileName)) == true) { // appends character to prevent override
+			fileName = fileName.substring(0, fileName.lastIndexOf(".")) + "_1"
+					+ fileName.substring(fileName.lastIndexOf("."));
+		}
+		File file = new File(datasetsDir + fileName);
 		multipartFile.transferTo(file);
-		dataset.setContent(fileName);
+		dataset.setContent("/src/datasets/" + fileName);
+		dataset.setName(fileName);
 		dataset.setSize(multipartFile.getSize());
 		dataset.setUploadTime(new Date());
 		dataset.setUsername(username);
