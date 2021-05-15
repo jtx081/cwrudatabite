@@ -115,12 +115,12 @@ public class FileHandler {
 		return length;
 	}
 
-	private String getExtension(String name) {
+	public String getExtension(String name) {
 		int position = getExtensionPosition(name);
 		return name.substring(position, name.length());
 	}
 
-	private int getExtensionPosition(String name) {
+	public int getExtensionPosition(String name) {
 		int returnVal = 0;
 		for (int i = 0; i < name.length(); i++) {
 			if (name.charAt(i) == '.') {

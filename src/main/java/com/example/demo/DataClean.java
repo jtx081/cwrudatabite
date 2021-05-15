@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-package com.example.demo; 
-=======
 package com.example.demo;
->>>>>>> Stashed changes
 
 import java.util.stream.Collectors;
 import java.util.*;
@@ -14,10 +10,10 @@ public class DataClean {
 
     public DataClean(int m, int n, double t) { // create your own inputData matrix by editiing this constructor
         this.inputData = new double[m][n];
-        
-        for (int i=0; i<m; i++) {
-            for (int j=0; j<n; j++) {
-                inputData[i][j] = (i+j)/t;
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                inputData[i][j] = (i + j) / t;
             }
         }
     }
@@ -40,26 +36,25 @@ public class DataClean {
     }
 
     public double[][] deleteRow(double[][] dataSet, int delete_row_index) {
-        double[][] newData = new double[dataSet.length-1][dataSet[0].length];
-        int n=0;
-        if (delete_row_index==dataSet.length-1) {
-            for (int i=0;i<dataSet.length-1; i++) {
-                for (int j=0;j<dataSet[0].length;j++) {
-                    if (delete_row_index==i) {
+        double[][] newData = new double[dataSet.length - 1][dataSet[0].length];
+        int n = 0;
+        if (delete_row_index == dataSet.length - 1) {
+            for (int i = 0; i < dataSet.length - 1; i++) {
+                for (int j = 0; j < dataSet[0].length; j++) {
+                    if (delete_row_index == i) {
                         i++;
                     }
-                    newData[n][j]=dataSet[i][j];
+                    newData[n][j] = dataSet[i][j];
                 }
                 n++;
             }
-        }
-        else {
-            for (int i=0;i<dataSet.length; i++) {
-                for (int j=0;j<dataSet[0].length;j++) {
-                    if(delete_row_index==i) {
+        } else {
+            for (int i = 0; i < dataSet.length; i++) {
+                for (int j = 0; j < dataSet[0].length; j++) {
+                    if (delete_row_index == i) {
                         i++;
-                    } 
-                    newData[n][j]=dataSet[i][j];
+                    }
+                    newData[n][j] = dataSet[i][j];
                 }
                 n++;
             }
@@ -68,9 +63,9 @@ public class DataClean {
     }
 
     public double[][] deleteColumn(double[][] dataSet, int delete_col_index) {
-        double[][] newData = new double[dataSet.length][dataSet[0].length-1];
-        for (int i=0; i < dataSet.length; i++) {
-            for (int j=0, k=0; j < dataSet[0].length-1 && k < dataSet[0].length; j++) {
+        double[][] newData = new double[dataSet.length][dataSet[0].length - 1];
+        for (int i = 0; i < dataSet.length; i++) {
+            for (int j = 0, k = 0; j < dataSet[0].length - 1 && k < dataSet[0].length; j++) {
                 if (j != delete_col_index) {
                     newData[i][k++] = dataSet[i][j];
                 }
@@ -109,35 +104,34 @@ public class DataClean {
         return newData;
     }
 
-    //Standardization: rescale to mean-zero and unit standard deviation 
-   public double[][] standardize(double[][] dataSet) {
-       double sum=0.0;
-       for (int i=0;i<dataSet.length;i++){
-           for (int j=0; j<dataSet[0].length;j++){
-               sum += dataSet[i][j];
-           }
-       }
-        double mean = sum/(dataSet.length*dataSet[0].length);
+    // Standardization: rescale to mean-zero and unit standard deviation
+    public double[][] standardize(double[][] dataSet) {
+        double sum = 0.0;
+        for (int i = 0; i < dataSet.length; i++) {
+            for (int j = 0; j < dataSet[0].length; j++) {
+                sum += dataSet[i][j];
+            }
+        }
+        double mean = sum / (dataSet.length * dataSet[0].length);
         double std = 0.0;
-        //compute standard deviation
-        for (double[] i: dataSet) {
-            for (double ij: i) {
-                std += Math.pow(ij-mean,2.0); 
+        // compute standard deviation
+        for (double[] i : dataSet) {
+            for (double ij : i) {
+                std += Math.pow(ij - mean, 2.0);
             }
         }
         std = Math.sqrt(std / (dataSet.length * dataSet[0].length));
 
-        
         double[][] newData = new double[dataSet.length][dataSet[0].length];
-        for (int i=0; i<dataSet.length; i++) {
-            for (int j=0; j<dataSet[0].length; j++) {
-                newData[i][j]= (dataSet[i][j]-mean)/std;
+        for (int i = 0; i < dataSet.length; i++) {
+            for (int j = 0; j < dataSet[0].length; j++) {
+                newData[i][j] = (dataSet[i][j] - mean) / std;
             }
         }
         return newData;
     }
 
-    //@Override
+    // @Override
     public void toDense(double[][] dataSet) {
         int count = 0;
         for (int i = 0; i < dataSet.length; i++) {
@@ -163,7 +157,7 @@ public class DataClean {
 
     }
 
-    //@Override
+    // @Override
     public double[] average(double[][] dataSet) {
         double[] averageOnRows = new double[dataSet.length];
         for (int i = 0; i < dataSet.length; i++) {
