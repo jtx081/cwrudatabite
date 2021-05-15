@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.nio.file.Files;
 import java.io.File;
+import com.example.demo.FileHandler;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -198,8 +199,12 @@ public class AppController {
 	}
 
 	@GetMapping("/charts/{id}")
-	public String showCharts(@PathVariable String id) {
-
+	public String showCharts(@PathVariable String id, Model model) throws IOException {
+		Dataset result = datarepo.findByDatasetId(Integer.parseInt(id));
+		String filePath = System.getProperty("user.dir") + result.getContent();
+		FileHandler fh =  new FileHandler();
+		double[][] data = fh.convertToData(new File(filePath));
+		model.addAttribute("data",data.toString());
 		return "charts";
 	}
 
