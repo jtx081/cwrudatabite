@@ -290,17 +290,17 @@ public class AppController {
 	// return "accountBus";
 	// }
 
-	@GetMapping("/remove_duplicates")
-	public String removeDuplicates(RedirectAttributes ra) {
+	@GetMapping("/remove_duplicates/{id}")
+	public String removeDuplicates(@PathVariable String id, RedirectAttributes ra) {
 
 		ra.addFlashAttribute("message", "Failed to remove duplicates");
 
-		return "redirect:/main";
+		return "redirect:/main"; 
 
 	}
 
-	@GetMapping("/fill_missing")
-	public String fillMissingValues(RedirectAttributes ra) {
+	@GetMapping("/fill_missing/{id}")
+	public String fillMissingValues(@PathVariable String id, RedirectAttributes ra) {
 
 		ra.addFlashAttribute("message", "Failed to fill in missing values");
 
