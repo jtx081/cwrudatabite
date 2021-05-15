@@ -92,7 +92,8 @@
                         	<td class="actions">
                         		<a class = "btn btn-light" th:href="@{'/download?id='+${data.datasetID}}" title="Download Dataset"><i class="fa fa-download"></i></a>
                                 <a class = "btn btn-light" th:href="@{/remove_duplicates/{id}(id=${data.datasetID})}" title="Remove Duplicates"><i class="fa fa-minus-circle"></i></a>
-                                <a class = "btn btn-light" th:href="@{/fill_missing/{id}(id=${data.datasetID})}" title="Fill Missing Values"><i class="fa fa-plus-circle"></i></a>
+                                <a class = "btn btn-light" th:href="@{/normalize/{id}(id=${data.datasetID})}" title="Normalize Data"><i class="fa fa-plus-circle"></i></a>
+                                <a class = "btn btn-light" th:href="@{/standardize/{id}(id=${data.datasetID})}" title="Standarize Data"><i class="fa fa-plus-circle"></i></a>
                                 <a class = "btn btn-light" th:href="@{/charts/{id}(id=${data.datasetID})}" title="Visualize data"><i class="fa fa-bar-chart"></i></a>
                                 <a class = "btn btn-light" th:href="@{/main/delete_dataset/{id}(id=${data.datasetID})}" title="Delete Dataset" onClick="return confirm('Are you sure you want to delete?')"><i class="fa fa-trash"> </i></a> 
                             </td>   

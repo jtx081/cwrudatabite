@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
@@ -9,9 +10,9 @@ import java.nio.file.*;
 public class FileHandler {
 
 	Object file;
-	
+
 	public FileHandler() {
-		//body
+		// body
 	}
 
 	public boolean checkFileType(File file) {
@@ -23,18 +24,18 @@ public class FileHandler {
 				&& extension.equals(".xml") == false) {
 			System.out.println("Error. Incorrect file format.");
 			return false;
-		}
-		else return true; 
+		} else
+			return true;
 	}
 
-	public double[][] convertToData(File file) throws IOException{
+	public double[][] convertToData(File file) throws IOException {
 		int setSize = getFileLength(file);
 		double[][] dataSet = new double[setSize][];
-		if (checkFileType(file)== true){
+		if (checkFileType(file) == true) {
 			Scanner sc = new Scanner(file);
 			String line;
 			int index = 0;
-			while(sc.hasNextLine()){
+			while (sc.hasNextLine()) {
 				line = sc.nextLine();
 				double[] val = stringToArray(line);
 				dataSet[index] = val;
@@ -44,80 +45,82 @@ public class FileHandler {
 		}
 		return dataSet;
 	}
-	
-	public void convertToFile(Double[][] dataSet, String fileName) throws IOException{
+
+	public void convertToFile(double[][] dataSet, String fileName) throws IOException {
 		String fileType = getExtension(fileName);
-		ArrayList<Double> inputData = DataClean.twoDArrToArrList(dataSet);
 		ArrayList<String> strList = new ArrayList<String>();
-		for (Double d : inputData) {
-			strList.add(d.toString());
+		for (int i = 0; i < dataSet.length; i++) {
+			for (int j = 0; j < dataSet[0].length; j++) {
+				strList.add(Double.toString(dataSet[i][j]));
+			}
 		}
 
 		try {
 			BufferedWriter writer = Files.newBufferedWriter(Paths.get(fileName));
-			if (fileType==".csv") {
-				for (int i=0; i<dataSet.length; i++) {
-					ArrayList<String> iList = (ArrayList<String>) strList.subList((i-1)*dataSet[0].length,(i-1)*dataSet[0].length+dataSet[0].length-1);
+			if (fileType == ".csv") {
+				for (int i = 0; i < dataSet.length; i++) {
+					ArrayList<String> iList = (ArrayList<String>) strList.subList((i - 1) * dataSet[0].length,
+							(i - 1) * dataSet[0].length + dataSet[0].length - 1);
 					writer.write(String.join(",", iList));
 					writer.newLine();
 				}
 				writer.close();
-				System.out.println("CSV data entered!");	
-			}
-			else if (fileType==".tsv") {
-				for (int i=0; i<dataSet.length; i++) {
-					ArrayList<String> iList = (ArrayList<String>) strList.subList((i-1)*dataSet[0].length,(i-1)*dataSet[0].length+dataSet[0].length-1);
+				System.out.println("CSV data entered!");
+			} else if (fileType == ".tsv") {
+				for (int i = 0; i < dataSet.length; i++) {
+					ArrayList<String> iList = (ArrayList<String>) strList.subList((i - 1) * dataSet[0].length,
+							(i - 1) * dataSet[0].length + dataSet[0].length - 1);
 					writer.write(String.join("\t", iList));
 					writer.newLine();
 				}
 				writer.close();
 				System.out.println("TSV data entered!");
-			}
-			else if (fileType==".txt") {
-				for (int i=0; i<dataSet.length; i++) {
-					ArrayList<String> iList = (ArrayList<String>) strList.subList((i-1)*dataSet[0].length,(i-1)*dataSet[0].length+dataSet[0].length-1);
-					
+			} else if (fileType == ".txt") {
+				for (int i = 0; i < dataSet.length; i++) {
+					ArrayList<String> iList = (ArrayList<String>) strList.subList((i - 1) * dataSet[0].length,
+							(i - 1) * dataSet[0].length + dataSet[0].length - 1);
+
 					writer.write(String.join("\s", iList));
 					writer.newLine();
 				}
 				writer.close();
-				System.out.println("txt data entered!");	
+				System.out.println("txt data entered!");
 			}
 		}
 
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-    	}
+	}
 
-	public double[] stringToArray(String line){
+	public double[] stringToArray(String line) {
 		int length = line.length();
 		int index = 1;
 		double[] returnValue = new double[length];
-		while(index <= length){
-			returnValue[index-1] = line.charAt(index-1)-48;
+		while (index <= length) {
+			returnValue[index - 1] = line.charAt(index - 1) - 48;
 			index++;
 		}
 		return returnValue;
 	}
 
-	public int getFileLength(File file) throws IOException{
+	public int getFileLength(File file) throws IOException {
 		Scanner sc = new Scanner(file);
 		int length = 0;
-		while (sc.hasNextLine()){
-			length ++;
+		while (sc.hasNextLine()) {
+			length++;
 			sc.nextLine();
 		}
 		sc.close();
 		return length;
 	}
 
-	private String getExtension(String name) {
+	public String getExtension(String name) {
 		int position = getExtensionPosition(name);
 		return name.substring(position, name.length());
 	}
 
-	private int getExtensionPosition(String name) {
+	public int getExtensionPosition(String name) {
 		int returnVal = 0;
 		for (int i = 0; i < name.length(); i++) {
 			if (name.charAt(i) == '.') {

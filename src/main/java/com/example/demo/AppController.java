@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -17,18 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -203,7 +198,7 @@ public class AppController {
 	public String showCharts(@PathVariable String id, Model model) throws IOException {
 		Dataset result = datarepo.findByDatasetId(Integer.parseInt(id));
 		String filePath = System.getProperty("user.dir") + result.getContent();
-		FileHandler fh =  new FileHandler();
+		FileHandler fh = new FileHandler();
 		double[][] data = fh.convertToData(new File(filePath));
 		model.addAttribute("chartData", Arrays.deepToString(data));
 		return "charts";
@@ -298,17 +293,90 @@ public class AppController {
 
 	@GetMapping("/remove_duplicates/{id}")
 	public String removeDuplicates(@PathVariable String id, RedirectAttributes ra) {
+		Dataset dataset = datarepo.findByDatasetId(Integer.valueOf(id));
 
-		ra.addFlashAttribute("message", "Failed to remove duplicates");
+		File file = new File(System.getProperty("user.dir") + dataset.getContent());
+		DataClean dc = new DataClean(file);
 
-		return "redirect:/main"; 
+		if (dc.getInputdata() == null) {
+			ra.addFlashAttribute("message", "Failed to remove duplicates");
+			return "redirect:/main";
+		}
+
+		dc.toDense(dc.getInputdata());
+
+		FileHandler fh = new FileHandler();
+		try {
+			fh.convertToFile(dc.getInputdata(), dataset.getContent());
+		} catch (IOException e) {
+			ra.addFlashAttribute("message", "Failed to remove duplicates");
+			e.printStackTrace();
+		}
+
+		return "redirect:/main";
 
 	}
 
-	@GetMapping("/fill_missing/{id}")
-	public String fillMissingValues(@PathVariable String id, RedirectAttributes ra) {
+	@GetMapping("/normalize/{id}")
+	public String normalizeValues(@PathVariable String id, RedirectAttributes ra) {
+		Dataset dataset = datarepo.findByDatasetId(Integer.valueOf(id));
 
-		ra.addFlashAttribute("message", "Failed to fill in missing values");
+		File file = new File(System.getProperty("user.dir") + dataset.getContent());
+		DataClean dc = new DataClean(file);
+
+		if (dc.getInputdata() == null) {
+			ra.addFlashAttribute("message", "Failed to normalize values");
+			return "redirect:/main";
+		}
+
+		Double[][] toCleanSet = new Double[dc.getInputdata().length][dc.getInputdata()[0].length];
+		for (int i = 0; i < dc.getInputdata().length; i++) {
+			for (int j = 0; j < dc.getInputdata()[0].length; j++) {
+				toCleanSet[i][j] = dc.getInputdata()[i][j];
+			}
+		}
+		Double[][] cleanedSet = dc.normalize(toCleanSet);
+
+		double[][] doubleCleanedSet = new double[cleanedSet.length][cleanedSet[0].length];
+		for (int i = 0; i < cleanedSet.length; i++) {
+			for (int j = 0; j < cleanedSet[0].length; j++) {
+				doubleCleanedSet[i][j] = cleanedSet[i][j];
+			}
+		}
+
+		FileHandler fh = new FileHandler();
+		try {
+			fh.convertToFile(doubleCleanedSet, dataset.getContent());
+		} catch (IOException e) {
+			ra.addFlashAttribute("message", "Failed to normalize values");
+			e.printStackTrace();
+		}
+
+		return "redirect:/main";
+
+	}
+
+	@GetMapping("/standardize/{id}")
+	public String standardizeValues(@PathVariable String id, RedirectAttributes ra) {
+		Dataset dataset = datarepo.findByDatasetId(Integer.valueOf(id));
+
+		File file = new File(System.getProperty("user.dir") + dataset.getContent());
+		DataClean dc = new DataClean(file);
+
+		if (dc.getInputdata() == null) {
+			ra.addFlashAttribute("message", "Failed to standardize values");
+			return "redirect:/main";
+		}
+
+		double[][] cleanedSet = dc.standardize(dc.getInputdata());
+
+		FileHandler fh = new FileHandler();
+		try {
+			fh.convertToFile(cleanedSet, dataset.getContent());
+		} catch (IOException e) {
+			ra.addFlashAttribute("message", "Failed to standardize values");
+			e.printStackTrace();
+		}
 
 		return "redirect:/main";
 
